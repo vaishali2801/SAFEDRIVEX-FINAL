@@ -7,7 +7,7 @@ const app = require('./app');
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT;
+const PORT = env.port;
 
 const startServer = async () => {
   try {

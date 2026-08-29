@@ -18,24 +18,24 @@ const register = async (req, res) => {
       return errorResponse(res, 'Vehicle number already registered', null, 409);
     }
 
-    const vehicle = await Vehicle.create({
-      vehicleNumber: vehicleNumber.toUpperCase(),
-      vehicleType,
-      userId: null,
-    });
-
+    // Create user first so we have a userId for the vehicle
     const user = await User.create({
       name,
       email,
       mobile,
       password,
       licenseNumber: licenseNumber?.toUpperCase(),
-      vehicleId: vehicle._id,
       role: USER_ROLES.USER,
     });
 
-    vehicle.userId = user._id;
-    await vehicle.save();
+    const vehicle = await Vehicle.create({
+      vehicleNumber: vehicleNumber.toUpperCase(),
+      vehicleType,
+      userId: user._id,
+    });
+
+    user.vehicleId = vehicle._id;
+    await user.save();
 
     const token = generateToken({ userId: user._id, role: user.role });
 

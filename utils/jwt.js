@@ -8,7 +8,7 @@ const generateToken = (payload) => {
 };
 
 const verifyToken = (token) => {
-  return jwt.verify(token, process.env.jwtSecret);
+  return jwt.verify(token, env.jwtSecret);
 };
 
 const decodeToken = (token) => {
